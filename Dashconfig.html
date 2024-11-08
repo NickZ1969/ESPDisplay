@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Dashboard Configuration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .config-item {
+            margin-bottom: 15px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #sendButton {
+            background-color: #008CBA;
+        }
+        #sendButton:hover {
+            background-color: #007B9A;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pro Display Configuration</h1>
+    
+    <button id="connectButton">Connect to Display</button>
+
+    <form id="configForm">
+        <div id="positionConfig"></div>
+        <div id="warningConfig"></div>
+        <div class="config-item">
+            <label for="canSpeed">CAN Bus Speed:</label>
+            <select id="canSpeed" name="canSpeed">
+                <option value="500000">500kb</option>
+                <option value="1000000">1mb</option>
+            </select>
+        </div>
+        <button type="submit">Save Configuration</button>
+    </form>
+
+    <button id="loadConfigButton">Load Configuration</button>
+    <button id="sendButton">Send Data to Display</button>
+
+    <script>
+        const dataOptions = [
+            "Oil Pressure", "Fuel Pressure", "AFR", "AFR 2", "Lambda", "Lambda 2", "Coolant Temp", "Inlet Air Temp",
+            "MAP KPA", "MAP PSI", "TPS", "Battery", "Duty Cycle", "Advance", "Gear", "Speed", "Boost Target", "Fuel Load", "Flex"
+        ];
+
+        const warningItems = ["Oil Pressure", "Fuel Pressure", "MAP Pressure", "Coolant Temp", "Inlet Air Temp"];
+
+        let port;
+
+        async function connectSerial() {
+            try {
+                port = await navigator.serial.requestPort();
+                await port.open({ baudRate: 115200 });
+                console.log('Serial connection established');
+                document.getElementById('connectButton').textContent = 'Connected';
+                document.getElementById('connectButton').disabled = true;
+            } catch (error) {
+                console.error('Error connecting to serial port:', error);
+                alert('Failed to connect. Please try again.');
+            }
+        }
+
+        async function sendToSerial(data) {
+            if (!port) {
+                alert('Please connect to ESP32 first');
+                return;
+            }
+            const writer = port.writable.getWriter();
+            const encoder = new TextEncoder();
+            await writer.write(encoder.encode(data));
+            writer.releaseLock();
+        }
+
+        function createPositionConfig() {
+            const container = document.getElementById('positionConfig');
+            for (let i = 1; i <= 8; i++) {
+                const div = document.createElement('div');
+                div.className = 'config-item';
+                div.innerHTML = `
+                    <label for="pos${i}">Position ${i}:</label>
+                    <select id="pos${i}" name="pos${i}">
+                        ${dataOptions.map((option, index) => `<option value="${index}">${option}</option>`).join('')}
+                    </select>
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        function createWarningConfig() {
+            const container = document.getElementById('warningConfig');
+            warningItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'config-item';
+                div.innerHTML = `
+                    <label for="${item.replace(' ', '_')}">${item} Warning:</label>
+                    <input type="number" id="${item.replace(' ', '_')}" name="${item.replace(' ', '_')}" step="0.1">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function saveConfig(event) {
+            event.preventDefault();
+            const config = {
+                positions: {},
+                warnings: {},
+                canSpeed: document.getElementById('canSpeed').value
+            };
+            for (let i = 1; i <= 8; i++) {
+                config.positions[`pos${i}`] = document.getElementById(`pos${i}`).value;
+            }
+            warningItems.forEach(item => {
+                config.warnings[item.replace(' ', '_')] = document.getElementById(item.replace(' ', '_')).value;
+            });
+            
+            localStorage.setItem('dashboardConfig', JSON.stringify(config));
+            alert('Configuration saved successfully!');
+        }
+
+        function loadConfig() {
+            const savedConfig = localStorage.getItem('dashboardConfig');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                for (let i = 1; i <= 8; i++) {
+                    document.getElementById(`pos${i}`).value = config.positions[`pos${i}`];
+                }
+                warningItems.forEach(item => {
+                    document.getElementById(item.replace(' ', '_')).value = config.warnings[item.replace(' ', '_')];
+                });
+                document.getElementById('canSpeed').value = config.canSpeed || '500000';
+                alert('Configuration loaded successfully!');
+            } else {
+                alert('No saved configuration found.');
+            }
+        }
+
+        async function sendDataToESP32() {
+            if (!port) {
+                alert('Please connect to ESP32 first');
+                return;
+            }
+            try {
+                const config = localStorage.getItem('dashboardConfig');
+                if (!config) {
+                    alert('No configuration saved. Please save a configuration first.');
+                    return;
+                }
+                await sendToSerial(config);
+                alert('Configuration sent to ESP32!');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error sending data to ESP32');
+            }
+        }
+
+        document.getElementById('connectButton').addEventListener('click', connectSerial);
+        document.getElementById('configForm').addEventListener('submit', saveConfig);
+        document.getElementById('loadConfigButton').addEventListener('click', loadConfig);
+        document.getElementById('sendButton').addEventListener('click', sendDataToESP32);
+
+        createPositionConfig();
+        createWarningConfig();
+    </script>
+</body>
+</html>

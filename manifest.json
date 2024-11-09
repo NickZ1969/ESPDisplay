@@ -5,8 +5,11 @@
   "builds": [
     {
       "chipFamily": "ESP32",
+      "improv": false,
       "parts": [
-        { "path": "Prodisplay.bin", "offset": 0 },
+        { "path": "bootloader.bin", "offset": 4096 },
+        { "path": "partitions.bin", "offset": 32768 },
+        { "path": "web43.bin", "offset": 65536 }
       ]
     }
    ]

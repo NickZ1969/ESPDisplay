@@ -2,7 +2,7 @@
   "name": "Pro Display",
   "builds": [
     {
-      "chipFamily": "ESP32",
+      "chipFamily": "ESP32-S3",
       "improv": false,
       "parts": [
         { "path": "bootloader.bin", "offset": 4096 },

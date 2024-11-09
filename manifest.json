@@ -14,3 +14,18 @@
     }
    ]
 }
+{
+  "name": "Pro Display",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "improv": false,
+      "parts": [
+        { "path": "bootloader.bin", "offset": 4096 },
+        { "path": "partitions.bin", "offset": 32768 },
+        { "path": "boot.bin", "offset": 57344 },
+        { "path": "web43.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}

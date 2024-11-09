@@ -6,14 +6,8 @@
     {
       "chipFamily": "ESP32",
       "parts": [
-        { "path": "merged-firmware.bin", "offset": 0 },
-      ]
-    },
-    {
-      "chipFamily": "ESP8266",
-      "parts": [
-        { "path": "esp8266.bin", "offset": 0 }
+        { "path": "Prodisplay.bin", "offset": 0 },
       ]
     }
-  ]
+   ]
 }

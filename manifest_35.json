@@ -5,8 +5,8 @@
       "chipFamily": "ESP32",
       "improv": true,
       "parts": [
-        { "path": "Prodisplay35/ESP_Dual-bootloader.bin", "offset": 0 },
-        { "path": "Prodisplay35/ESP_Dual-partitions.bin", "offset": 32768 },
+        { "path": "Prodisplay35/ESP_Dual_bootloader.bin", "offset": 4096 },
+        { "path": "Prodisplay35/ESP_Dual_partitions.bin", "offset": 32768 },
         { "path": "Prodisplay35/boot_app0.bin", "offset": 57344 },
         { "path": "Prodisplay35/ESP_Dual.bin", "offset": 65536 }
       ]

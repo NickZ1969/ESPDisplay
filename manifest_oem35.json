@@ -8,7 +8,7 @@
         { "path": "Prodisplay35/ESP_Dual_bootloader.bin", "offset": 4096 },
         { "path": "Prodisplay35/ESP_Dual_partitions.bin", "offset": 32768 },
         { "path": "Prodisplay35/boot_app0.bin", "offset": 57344 },
-        { "path": "oem35.bin", "offset": 65536 }
+        { "path": "OEM35.bin", "offset": 65536 }
       ]
     }
   ]

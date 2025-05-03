@@ -8,7 +8,7 @@
         { "path": "bootloader.bin", "offset": 0 },
         { "path": "partitions.bin", "offset": 32768 },
         { "path": "boot.bin", "offset": 57344 },
-        { "path": "link7.bin", "offset": 65536 }
+        { "path": "Link7.bin", "offset": 65536 }
       ]
     }
   ]

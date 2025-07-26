@@ -8,7 +8,7 @@
         { "path": "bootloader.bin", "offset": 0 },
         { "path": "partitions.bin", "offset": 32768 },
         { "path": "boot.bin", "offset": 57344 },
-        { "path": "mach7.bin", "offset": 65536 }
+        { "path": "machone7.bin", "offset": 65536 }
       ]
     }
   ]

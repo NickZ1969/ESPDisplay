@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Ubuntu, sans-serif;
+        padding: 0;
+        margin: 0;
+        line-height: 1.4;
+      }
+      .content {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 12px;
+      }
+      h2 {
+        margin-top: 2em;
+      }
+      h3 {
+        margin-top: 1.5em;
+      }
+      a {
+        color: #03a9f4;
+      }
+      .invisible {
+        visibility: hidden;
+      }
+      .hidden {
+        display: none;
+      }
+      esp-web-install-button[install-unsupported] {
+        visibility: inherit;
+      }
+      .content pre {
+        max-width: 100%;
+        overflow-y: scroll;
+      }
+      .footer {
+        margin-top: 24px;
+        border-top: 1px solid #ccc;
+        padding-top: 24px;
+        text-align: center;
+      }
+      .footer .initiative {
+        font-style: italic;
+        margin-top: 16px;
+      }
+      table {
+        border-spacing: 0;
+      }
+      td {
+        padding: 8px;
+        border-bottom: 1px solid #ccc;
+      }
+      .radios li {
+        list-style: none;
+        line-height: 2em;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #333;
+          color: #fff;
+        }
+        a {
+          color: #58a6ff;
+        }
+      }
+    </style>
+    <script type="module" src="https://unpkg.com/esp-web-tools@10.0.1/dist/web/install-button.js?module"></script>
+  </head>
+<body>
+  <div class="content">
+    <h1>Pro Display Installer</h1>
+     <div class="image-container">
+      <img src="https://nickz1969.github.io/ESPDisplay/Display.gif" alt="Display" width="320" height="180" class="centered-image">
+    </div>
+    <p>Speeduino Based Serial</p>
+    <ul class="radios">
+      <li>
+        <label><input type="radio" name="type" value="35" />Pro Display 3.5" Beta</label>
+      </li>
+      <li>
+        <label><input type="radio" name="type" value="43" />Pro Display 4.3"</label>
+      </li>
+      <li>
+        <label><input type="radio" name="type" value="5" />Pro Display 5"</label>
+      </li>
+      <li>
+        <label><input type="radio" name="type" value="7" />Pro Display 7"</label>
+      </li>
+      <li>
+        <label><input type="radio" name="type" value="OEM35" />Spare</label>
+      </li>
+    </ul>
+
+    <p>Can bus Enabled Haltech Protocol</p>
+    
+    <ul class="radios">
+      <li>
+        <label><input type="radio" name="type" value="C43" />Pro Display 4.3" Haltech Protocol</label>
+      </li>
+      <li>
+        <label><input type="radio" name="type" value="C5" />Pro Display 5" Haltech Protocol</label>
+      </li>
+      <li>
+        <label><input type="radio" name="type" value="C7" />Pro Display 7" Haltech Protocol</label>
+      </li>
+    </ul>
+
+    <p>Can bus Enabled Others</p>
+    
+    <ul class="radios">
+      <li>
+        <label><input type="radio" name="type" value="maxx43" />MAXXECU 4.3" Protocol</label>
+      </li>
+      <li>
+        <label><input type="radio" name="type" value="linkc7" />Link 7" Protocol</label>
+      </li>
+    </ul>
+    <p class="button-row" align="center">
+      <esp-web-install-button class="invisible"></esp-web-install-button>
+    </p>
+
+      </div>
+
+    <script>
+      document.querySelectorAll('input[name="type"]').forEach(radio =>
+        radio.addEventListener("change", () => {
+          const button = document.querySelector('esp-web-install-button');
+          button.manifest = `./manifest_${radio.value}.json`;
+          button.classList.remove('invisible');
+        }
+      ));
+    </script>
+
+</body>
+</html>

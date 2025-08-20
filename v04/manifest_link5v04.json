@@ -1,0 +1,16 @@
+{
+  "name": "Pro Display",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "improv": true,
+      "parts": [
+        { "path": "bootloader.bin", "offset": 0 },
+        { "path": "partitions.bin", "offset": 32768 },
+        { "path": "boot.bin", "offset": 57344 },
+        { "path": "link5v04.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}

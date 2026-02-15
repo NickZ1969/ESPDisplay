@@ -9,7 +9,7 @@
         { "path": "bootloader.bin", "offset": 0 },
         { "path": "partitions.bin", "offset": 32768 },
         { "path": "boot.bin", "offset": 57344 },
-        { "path": "haltech5v04.bin", "offset": 65536 }
+        { "path": "haltech5v2.bin", "offset": 65536 }
       ]
     }
   ]

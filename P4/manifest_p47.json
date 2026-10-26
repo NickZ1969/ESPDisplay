@@ -3,10 +3,10 @@
   "new_install_prompt_erase": true,
   "builds": [
     {
-      "chipFamily": "ESP32-S3",
+      "chipFamily": "ESP32-P4",
       "improv": true,
       "parts": [
-        { "path": "bootloader.bin", "offset": 0 },
+        { "path": "bootloader.bin", "offset": 2000 },
         { "path": "partitions.bin", "offset": 32768 },
         { "path": "boot_app0.bin", "offset": 57344 },
         { "path": "multican7p4.ino.bin", "offset": 65536 }
